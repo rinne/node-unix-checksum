@@ -68,9 +68,13 @@ function cs(file) {
 	 return Promise.all(p);
  })
  .then(function(ret) {
-	 var ec = 0;
+	 var ec = 0, first = true;
 	 ret.forEach(function(r) {
-		 console.log('--');
+		 if (first) {
+			 first = false;
+		 } else {
+			 console.log('--');
+		 }
 		 if (r.error) {
 			 ec++;
 			 if (r.file) {

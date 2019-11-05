@@ -47,6 +47,35 @@ console.log(uc.sysvSum(Buffer.from( [ 1,2,3,4,5 ])));
 console.log(uc.ckSum('Kekkonen, Kekkonen, Kekkonen'));
 ```
 
+Command line interface is provided only for demonstration purposes.
+
+```
+$ sum GPL-2.0.TXT
+42571    18
+$ sum --sysv GPL-2.0.TXT
+34111 36 GPL-2.0.TXT
+$ cksum GPL-2.0.TXT
+2811767965 18092 GPL-2.0.TXT
+$ node dumpchecksum.js GPL-2.0.TXT
+file:  GPL-2.0.TXT
+len:   18092
+bsd:   42571
+sysv:  34111
+cksum: 2811767965
+```
+
+
+Disclaimer
+==========
+
+As a developer you should be aware of the fact that the algorithms in
+this package MUST NOT in any circumstances to be considered
+cryptographically strong. In fact they are extremely weak. They are
+implemted for partly historical reasons and partly for helping
+backwards compatible implementations of some outdated standards, such
+as RFC 3230.
+
+
 Author
 ======
 
