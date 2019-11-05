@@ -8,6 +8,8 @@ function cs(file) {
 		var c1 = new uc.BsdSum();
 		var c2 = new uc.SysvSum();
 		var c3 = new uc.CkSum();
+		var c4 = new uc.CRC32();
+		var c5 = new uc.CRC32C();
 		var len = 0;
 		function final() {
 			var r = {};
@@ -18,6 +20,8 @@ function cs(file) {
 			r.bsd = c1.final();
 			r.sysv = c2.final();
 			r.cksum = c3.final();
+			r.crc32 = c4.final();
+			r.crc32c = c5.final();
 			return r;
 		}
 		if (file) {
@@ -30,6 +34,8 @@ function cs(file) {
 					c1.update(s);
 					c2.update(s);
 					c3.update(s);
+					c4.update(s);
+					c5.update(s);
 					len += l;
 				}
 				fs.closeSync(f);
@@ -47,6 +53,8 @@ function cs(file) {
 				c1.update(d);
 				c2.update(d);
 				c3.update(d);
+				c4.update(d);
+				c5.update(d);
 				len += d.length;
 			}).on('end', function() {
 				return resolve(final());
@@ -78,17 +86,19 @@ function cs(file) {
 		 if (r.error) {
 			 ec++;
 			 if (r.file) {
-				 console.log('file:  ' + r.file);
+				 console.log('file:   ' + r.file);
 			 }
-			 console.log('error: ' + r.error);
+			 console.log('error:  ' + r.error);
 		 } else {
 			 if (r.file) {
-				 console.log('file:  ' + r.file);
+				 console.log('file:   ' + r.file);
 			 }
-			 console.log('len:   ' + r.len);
-			 console.log('bsd:   ' + r.bsd);
-			 console.log('sysv:  ' + r.sysv);
-			 console.log('cksum: ' + r.cksum);
+			 console.log('len:    ' + r.len);
+			 console.log('bsd:    ' + r.bsd);
+			 console.log('sysv:   ' + r.sysv);
+			 console.log('cksum:  ' + r.cksum);
+			 console.log('crc32:  ' + r.crc32 + ' (' + r.crc32.toString(16) + ')');
+			 console.log('crc32c: ' + r.crc32c + ' (' + r.crc32c.toString(16) + ')');
 		 }
 	 });
 	 return ec == 0;
