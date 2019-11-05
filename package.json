@@ -1,6 +1,6 @@
 {
 	"name": "unix-checksum",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Implementation of Unix sum and cksum algorithms",
 	"main": "index.js",
 	"scripts": {
@@ -14,7 +14,7 @@
 		"type": "git",
 		"url": "https://github.com:rinne/node-unix-checksum.git"
 	},
-	"keyworss": [
+	"keywords": [
 		"sum",
 		"cksum",
 		"crc",
