@@ -1,0 +1,29 @@
+{
+	"name": "unix-checksum",
+	"version": "0.0.1",
+	"description": "Implementation of Unix sum and cksum algorithms",
+	"main": "index.js",
+	"scripts": {
+		"test": "node ./test/test.js"
+	},
+	"engines": {
+		"node": ">=8.00.0"
+	},
+	"dependencies": {},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com:rinne/node-unix-checksum.git"
+	},
+	"keyworss": [
+		"sum",
+		"cksum",
+		"crc",
+		"unix"
+	],
+	"author": {
+		"name": "Timo J. Rinne",
+		"email": "tri@iki.fi",
+		"url": "https://github.com/rinne/"
+	},
+	"license": "GPL-2.0"
+}

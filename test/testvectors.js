@@ -1,0 +1,32 @@
+'use strict';
+
+module.exports = [
+	{ input: 'f',
+	  bsdsum: 102,
+	  sysvsum: 102,
+	  cksum: 2131560324 },
+	{ input: 'foo',
+	  bsdsum: 192,
+	  sysvsum: 324,
+	  cksum: 2470157969 },
+	{ input: 'foobar',
+	  bsdsum: 211,
+	  sysvsum: 633,
+	  cksum: 2606601686 },
+	{ input: 'abcdefghijklmnopqrstuvwxuz',
+	  bsdsum: 53551,
+	  sysvsum: 2843,
+	  cksum: 2820596108 },
+	{ input: 'abcdefghijklmnopqrstuvwxuzABCDEFGHIJKLMNOPQRSTUVWXUZ0123456789',
+	  bsdsum: 12923,
+	  sysvsum: 5379,
+	  cksum: 1538184635 },
+	{ input: 'Fp9Uyuh6GY5Ho6ktr3d4uE5YZgztLm8aBsZ56y2W2P2AJwFEsdNMBQHtsFqzleXd',
+	  bsdsum: 56754,
+	  sysvsum: 5542,
+	  cksum: 1755751968 },
+	{ input: ((function() { var r = Buffer.alloc(200000); for (let i = 0; i < r.length; i++) { r[i] = i % 256 } return r; })()),
+	  bsdsum: 6784,
+	  sysvsum: 741,
+	  cksum: 1205004431 }
+];
