@@ -1,22 +1,98 @@
 'use strict';
 
+const fs = require('fs');
 const uc = require('./index.js');
 
-(function() {
-	var c1 = new uc.BsdSum();
-	var c2 = new uc.SysvSum();
-	var c3 = new uc.CkSum();
-	var len = 0;
-	process.stdin.on('data', function(d) {
-		c1.update(d);
-		c2.update(d);
-		c3.update(d);
-		len += d.length;
-	}).on('end', function() {
-		console.log('len:   ' + len);
-		console.log('bsd:   ' + c1.final());
-		console.log('sysv:  ' + c2.final());
-		console.log('cksum: ' + c3.final());
-		process.exit(0);
+function cs(file) {
+	return new Promise(function(resolve, reject) {
+		var c1 = new uc.BsdSum();
+		var c2 = new uc.SysvSum();
+		var c3 = new uc.CkSum();
+		var len = 0;
+		function final() {
+			var r = {};
+			if (file) {
+				r.file = file;
+			}
+			r.len = len;
+			r.bsd = c1.final();
+			r.sysv = c2.final();
+			r.cksum = c3.final();
+			return r;
+		}
+		if (file) {
+			let f;
+			try {
+				f = fs.openSync(file, 'r');
+				let b = Buffer.alloc(16), l;
+				while ((l = fs.readSync(f, b, 0, b.length)) > 0) {
+					let s = b.slice(0, l);
+					c1.update(s);
+					c2.update(s);
+					c3.update(s);
+					len += l;
+				}
+				fs.closeSync(f);
+				f = undefined;
+				return resolve(final());
+			} catch(e) {
+				if (f) {
+					fs.closeSync(f)
+					f = undefined;
+				}
+				return reject(e);
+			}
+		} else {
+			process.stdin.on('data', function(d) {
+				c1.update(d);
+				c2.update(d);
+				c3.update(d);
+				len += d.length;
+			}).on('end', function() {
+				return resolve(final());
+			});
+		}
 	});
-})();
+}
+
+(Promise.resolve()
+ .then(function() {
+	 var p = [];
+	 if (process.argv.length < 3) {
+		 p.push(cs());
+	 } else {
+		 process.argv.slice(2).forEach(function(fn) {
+			 p.push(cs(fn).catch(function(e) { return { file: fn, error: e } }));
+		 });
+	 }
+	 return Promise.all(p);
+ })
+ .then(function(ret) {
+	 var ec = 0;
+	 ret.forEach(function(r) {
+		 console.log('--');
+		 if (r.error) {
+			 ec++;
+			 if (r.file) {
+				 console.log('file:  ' + r.file);
+			 }
+			 console.log('error: ' + r.error);
+		 } else {
+			 if (r.file) {
+				 console.log('file:  ' + r.file);
+			 }
+			 console.log('len:   ' + r.len);
+			 console.log('bsd:   ' + r.bsd);
+			 console.log('sysv:  ' + r.sysv);
+			 console.log('cksum: ' + r.cksum);
+		 }
+	 });
+	 return ec == 0;
+ })
+ .then(function(ret) {
+	 process.exit(ret ? 0 : 1);
+ })
+ .catch(function(e) {
+	 console.log(e);
+	 process.exit(1);
+ }));
