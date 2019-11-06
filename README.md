@@ -79,10 +79,11 @@ Disclaimer
 
 As a developer you should be aware of the fact that the algorithms in
 this package MUST NOT in any circumstances to be considered
-cryptographically strong. In fact they are extremely weak. They are
-implemted for partly historical reasons and partly for helping
-backwards compatible implementations of some outdated standards, such
-as RFC 3230.
+cryptographically strong. In fact they are extremely weak. The
+intended use for this library is to help backwards compatible
+implementations of some outdated standards, such as RFC 3230.
+Maintaining historical legacy is also among the motivations behind
+making this library public.
 
 
 Author

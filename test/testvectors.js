@@ -38,6 +38,7 @@ module.exports = [
 	  crc32: 0x84c163c4,
 	  crc32c: 0xae030bb9 },
 	{ input: Buffer.from(Array.from(Array(200000)).map((e, i) => (i % 256))),
+	  // repeating sequence 0, 1, 2 ... 255, 0, 1 ... truncated to 200000 bytes.
 	  bsdsum: 6784,
 	  sysvsum: 741,
 	  cksum: 1205004431,

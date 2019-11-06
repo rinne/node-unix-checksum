@@ -1,6 +1,6 @@
 {
 	"name": "unix-checksum",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Implementation of Unix sum, cksum, and crc32 algorithms",
 	"main": "index.js",
 	"scripts": {
@@ -15,12 +15,14 @@
 		"url": "https://github.com:rinne/node-unix-checksum.git"
 	},
 	"keywords": [
+		"checksum",
 		"sum",
 		"cksum",
 		"crc",
 		"crc32",
 		"crc32c",
-		"unix"
+		"unix",
+		"legacy"
 	],
 	"author": {
 		"name": "Timo J. Rinne",
