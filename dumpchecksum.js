@@ -9,7 +9,9 @@ function cs(file) {
 		var c2 = new uc.SysvSum();
 		var c3 = new uc.CkSum();
 		var c4 = new uc.CRC32();
+		var c4h = new uc.CRC32();
 		var c5 = new uc.CRC32C();
+		var c5h = new uc.CRC32C();
 		var len = 0;
 		function final() {
 			var r = {};
@@ -18,10 +20,14 @@ function cs(file) {
 			}
 			r.len = len;
 			r.bsd = c1.final();
+			r.bsdBlock = c1.block;
 			r.sysv = c2.final();
+			r.sysvBlock = c2.block;
 			r.cksum = c3.final();
 			r.crc32 = c4.final();
+			r.crc32_h = c4h.final('hex');
 			r.crc32c = c5.final();
+			r.crc32c_h = c5h.final('hex');
 			return r;
 		}
 		if (file) {
@@ -35,7 +41,9 @@ function cs(file) {
 					c2.update(s);
 					c3.update(s);
 					c4.update(s);
+					c4h.update(s);
 					c5.update(s);
+					c5h.update(s);
 					len += l;
 				}
 				fs.closeSync(f);
@@ -54,7 +62,9 @@ function cs(file) {
 				c2.update(d);
 				c3.update(d);
 				c4.update(d);
+				c4h.update(d);
 				c5.update(d);
+				c5h.update(d);
 				len += d.length;
 			}).on('end', function() {
 				return resolve(final());
@@ -86,19 +96,19 @@ function cs(file) {
 		 if (r.error) {
 			 ec++;
 			 if (r.file) {
-				 console.log('file:   ' + r.file);
+				 console.log('file:         ' + r.file);
 			 }
-			 console.log('error:  ' + r.error);
+			 console.log('error:        ' + r.error);
 		 } else {
 			 if (r.file) {
-				 console.log('file:   ' + r.file);
+				 console.log('file:         ' + r.file);
 			 }
-			 console.log('len:    ' + r.len);
-			 console.log('bsd:    ' + r.bsd);
-			 console.log('sysv:   ' + r.sysv);
-			 console.log('cksum:  ' + r.cksum);
-			 console.log('crc32:  ' + r.crc32 + ' (' + r.crc32.toString(16) + ')');
-			 console.log('crc32c: ' + r.crc32c + ' (' + r.crc32c.toString(16) + ')');
+			 console.log('input length: ' + r.len);
+			 console.log('bsd:          ' + r.bsd + ' (blocks: ' + r.bsdBlock + ')');
+			 console.log('sysv:         ' + r.sysv + ' (blocks: ' + r.sysvBlock + ')');
+			 console.log('cksum:        ' + r.cksum);
+			 console.log('crc32:        ' + r.crc32 + ' (' + r.crc32_h + ')');
+			 console.log('crc32c:       ' + r.crc32c + ' (' + r.crc32c_h + ')');
 		 }
 	 });
 	 return ec == 0;

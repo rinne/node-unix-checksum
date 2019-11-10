@@ -1,6 +1,7 @@
 'use strict';
 
 const bufferify = require('./bufferify.js');
+const finalize = require('./finalize.js');
 
 var ckSumTbl = undefined;
 
@@ -54,7 +55,7 @@ CkSum.prototype.update = function(b) {
 	return this;
 };
 
-CkSum.prototype.final = function() {
+CkSum.prototype.final = function(encoding) {
 	if (this.dead) {
 		throw new Error('Checksum context in error state');
 	}
@@ -66,7 +67,7 @@ CkSum.prototype.final = function() {
 		this.state += 4294967296;
 	}
 	this.dead = true;
-	return this.state;
+	return finalize(this.state, 32, encoding);
 }
 
 module.exports = CkSum;

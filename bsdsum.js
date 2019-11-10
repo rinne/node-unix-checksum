@@ -1,9 +1,11 @@
 'use strict';
 
 const bufferify = require('./bufferify.js');
+const finalize = require('./finalize.js');
 
 var BsdSum = function() {
 	this.length = 0;
+	this.block = null;
 	this.state = 0;
 	this.dead = false;
 }
@@ -30,21 +32,13 @@ BsdSum.prototype.update = function(b) {
 	return this;
 };
 
-BsdSum.prototype.final = function() {
+BsdSum.prototype.final = function(encoding) {
 	if (this.dead) {
 		throw new Error('Checksum context in error state');
 	}
 	this.dead = true;
-	return this.state;
+	this.block = Math.ceil(this.length / 1024);
+	return finalize(this.state, 16, encoding);
 }
-
-function bsdSum(b) {
-	b = bufferify(b);
-	var r = 0;
-	for (let i = 0; i < b.length; i++) {
-		r = ((r >> 1) + ((r & 1) << 15) + b[i]) & 0xffff;
-	}
-	return r;
-};
 
 module.exports = BsdSum;

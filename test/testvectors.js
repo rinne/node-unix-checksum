@@ -1,6 +1,12 @@
 'use strict';
 
 module.exports = [
+	{ input: '',
+	  bsdsum: 0,
+	  sysvsum: 0,
+	  cksum: 4294967295,
+	  crc32: 0,
+	  crc32c: 0 },
 	{ input: 'f',
 	  bsdsum: 102,
 	  sysvsum: 102,

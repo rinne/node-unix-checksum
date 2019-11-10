@@ -8,13 +8,13 @@ const CRC32C = require('./crc32c.js');
 
 module.exports = {
 	BsdSum: BsdSum,
-	bsdSum: function(b) { return new BsdSum().update(b).final(); },
+	bsdSum: function(b, enc) { return new BsdSum().update(b).final(enc); },
 	SysvSum: require('./sysvsum.js'),
-	sysvSum: function(b) { return new SysvSum().update(b).final(); },
+	sysvSum: function(b, enc) { return new SysvSum().update(b).final(enc); },
 	CkSum: require('./cksum.js'),
-	ckSum: function(b) { return new CkSum().update(b).final(); },
+	ckSum: function(b, enc) { return new CkSum().update(b).final(enc); },
 	CRC32: require('./crc32.js'),
-	crc32: function(b) { return new CRC32().update(b).final(); },
+	crc32: function(b, enc) { return new CRC32().update(b).final(enc); },
 	CRC32C: require('./crc32c.js'),
-	crc32c: function(b) { return new CRC32C().update(b).final(); }
+	crc32c: function(b, enc) { return new CRC32C().update(b).final(enc); }
 };

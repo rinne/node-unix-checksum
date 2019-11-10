@@ -1,6 +1,7 @@
 'use strict';
 
 const bufferify = require('./bufferify.js');
+const finalize = require('./finalize.js');
 
 var crcTblCache = new Map();
 
@@ -50,7 +51,7 @@ CRC32.prototype.update = function(b) {
 	return this;
 };
 
-CRC32.prototype.final = function() {
+CRC32.prototype.final = function(encoding) {
 	if (this.dead) {
 		throw new Error('Checksum context in error state');
 	}
@@ -58,7 +59,7 @@ CRC32.prototype.final = function() {
 		this.state += 4294967296;
 	}
 	this.dead = true;
-	return this.state;
+	return finalize(this.state, 32, encoding);
 }
 
 module.exports = CRC32;
