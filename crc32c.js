@@ -3,29 +3,35 @@
 const CRC32Generator = require('./crc32generator.js');
 
 var CRC32C = function() {
-	this.dead = false;
+	this.finalized = false;
 	this.length = 0;
 	this.crc = new CRC32Generator(-2097792136);
-}
+};
 
 CRC32C.prototype.update = function(b) {
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+	if (this.finalized) {
+		throw new Error('Checksum context in finalized state');
 	}
 	this.crc.update(b);
 	this.length = this.crc.length;
 	return this;
-}
+};
+
+CRC32C.prototype.digest = function(encoding) {
+	var r;
+	r = this.crc.digest(encoding);
+	if (! this.finalized) {
+		this.state = this.crc.state;
+		this.finalized = true;
+	}
+	return r;
+};
 
 CRC32C.prototype.final = function(encoding) {
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+	if (this.finalized) {
+		throw new Error('Checksum context already finalized');
 	}
-	var r = this.crc.final(encoding);
-	this.state = this.crc.state;
-	delete this.crc;
-	this.dead = true;
-	return r;
-}
+	return this.digest(encoding);
+};
 
 module.exports = CRC32C;

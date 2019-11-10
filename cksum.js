@@ -30,13 +30,13 @@ var CkSum = function() {
 	ckSumInit();
 	this.length = 0;
 	this.state = 0;
-	this.dead = false;
-}
+	this.finalized = false;
+};
 
 CkSum.prototype.update = function(b) {
 	var err;
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+	if (this.finalized) {
+		throw new Error('Checksum context in finalized state');
 	}
 	try {
 		b = bufferify(b);
@@ -45,7 +45,7 @@ CkSum.prototype.update = function(b) {
 		err = e;
 	}
 	if (err) {
-		this.dead = true;
+		this.finalized = true;
 		throw err;
 	}
 	for (let i = 0; i < b.length; i++) {
@@ -55,19 +55,25 @@ CkSum.prototype.update = function(b) {
 	return this;
 };
 
-CkSum.prototype.final = function(encoding) {
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+CkSum.prototype.digest = function(encoding) {
+	if (! this.finalized) {
+		for (let i = this.length; i > 0; i >>= 8) {
+			this.state = (this.state << 8) ^ ckSumTbl[((this.state >>> 24) ^ i) & 255];
+		}
+		this.state = ~this.state;
+		if (this.state < 0) {
+			this.state += 4294967296;
+		}
+		this.finalized = true;
 	}
-	for (let i = this.length; i > 0; i >>= 8) {
-		this.state = (this.state << 8) ^ ckSumTbl[((this.state >>> 24) ^ i) & 255];
-	}
-	this.state = ~this.state;
-	if (this.state < 0) {
-		this.state += 4294967296;
-	}
-	this.dead = true;
 	return finalize(this.state, 32, encoding);
-}
+};
+
+CkSum.prototype.final = function(encoding) {
+	if (this.finalized) {
+		throw new Error('Checksum context already finalized');
+	}
+	return this.digest(encoding);
+};
 
 module.exports = CkSum;

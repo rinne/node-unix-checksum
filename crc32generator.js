@@ -21,18 +21,18 @@ function crcInit(poly) {
 	return crcTblCache.get(poly);
 }
 
-var CRC32 = function(poly) {
+var CRC32gen = function(poly) {
 	this.poly = poly | 0;
 	this.crcTbl = crcInit(this.poly);
 	this.length = 0;
 	this.state = 0;
-	this.dead = false;
-}
+	this.finalized = false;
+};
 
-CRC32.prototype.update = function(b) {
+CRC32gen.prototype.update = function(b) {
 	var err;
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+	if (this.finalized) {
+		throw new Error('Checksum context in finalized state');
 	}
 	try {
 		b = bufferify(b);
@@ -41,7 +41,7 @@ CRC32.prototype.update = function(b) {
 		err = e;
 	}
 	if (err) {
-		this.dead = true;
+		this.finalized = true;
 		throw err;
 	}
 	for (let i = 0; i < b.length; i++) {
@@ -51,15 +51,21 @@ CRC32.prototype.update = function(b) {
 	return this;
 };
 
-CRC32.prototype.final = function(encoding) {
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+CRC32gen.prototype.digest = function(encoding) {
+	if (! this.finalized) {
+		this.finalized = true;
+		if (this.state < 0) {
+			this.state += 4294967296;
+		}
 	}
-	if (this.state < 0) {
-		this.state += 4294967296;
-	}
-	this.dead = true;
 	return finalize(this.state, 32, encoding);
-}
+};
 
-module.exports = CRC32;
+CRC32gen.prototype.final = function(encoding) {
+	if (this.finalized) {
+		throw new Error('Checksum context already finalized');
+	}
+	return this.digest(encoding);
+};
+
+module.exports = CRC32gen;

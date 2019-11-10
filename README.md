@@ -35,8 +35,8 @@ const uc = require('unix-checksum');
 		console.log('bsd:    ' + c1.final());
 		console.log('sysv:   ' + c2.final());
 		console.log('cksum:  ' + c3.final());
-		console.log('crc32:  ' + c4.final('hex'));
-		console.log('crc32c: ' + c5.final('hex'));
+		console.log('crc32:  ' + c4.digest() + ' ' + c4.digest('hex'));
+		console.log('crc32c: ' + c5.digest() + ' ' + c5.digest('hex'));
 		process.exit(0);
 	});
 })();
@@ -75,9 +75,14 @@ count can be read from the context property `block`. This is needed to
 duplicate the full information returned by the historical command line
 tools.
 
-Calling final() method multiple times triggers an error. An error is
-also triggered, if update() method is called after final() has already
-been called.
+Calling final() method multiple times, or after digest(), triggers an
+error. An error is also triggered, if update() method is called after
+final() or digest() has already been called.
+
+Instead of final(), the result can also be retrieved using digest()
+method. The first call to digest() method is identical to final() but
+unlike final() it can be called multiple times in order to retrieve
+the same checksum with multiple encodings.
 
 Command line interface is provided only for demonstration purposes.
 

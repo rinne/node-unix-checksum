@@ -7,13 +7,13 @@ var BsdSum = function() {
 	this.length = 0;
 	this.block = null;
 	this.state = 0;
-	this.dead = false;
-}
+	this.finalized = false;
+};
 
 BsdSum.prototype.update = function(b) {
 	var err;
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+	if (this.finalized) {
+		throw new Error('Checksum context in finalized state');
 	}
 	try {
 		b = bufferify(b);
@@ -22,7 +22,7 @@ BsdSum.prototype.update = function(b) {
 		err = e;
 	}
 	if (err) {
-		this.dead = true;
+		this.finalized = true;
 		throw err;
 	}
 	for (let i = 0; i < b.length; i++) {
@@ -32,13 +32,20 @@ BsdSum.prototype.update = function(b) {
 	return this;
 };
 
-BsdSum.prototype.final = function(encoding) {
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+BsdSum.prototype.digest = function(encoding) {
+	if (! this.finalized) {
+		this.block = Math.ceil(this.length / 1024);
+		this.finalized = true;
+		Object.freeze(this);
 	}
-	this.dead = true;
-	this.block = Math.ceil(this.length / 1024);
 	return finalize(this.state, 16, encoding);
-}
+};
+
+BsdSum.prototype.final = function(encoding) {
+	if (this.finalized) {
+		throw new Error('Checksum context already finalized');
+	}
+	return this.digest(encoding);
+};
 
 module.exports = BsdSum;

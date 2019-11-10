@@ -7,13 +7,13 @@ var SysvSum = function() {
 	this.length = 0;
 	this.block = null;
 	this.state = 0;
-	this.dead = false;
-}
+	this.finalized = false;
+};
 
 SysvSum.prototype.update = function(b) {
 	var err;
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+	if (this.finalized) {
+		throw new Error('Checksum context in finalized state');
 	}
 	try {
 		b = bufferify(b);
@@ -22,7 +22,7 @@ SysvSum.prototype.update = function(b) {
 		err = e;
 	}
 	if (err) {
-		this.dead = true;
+		this.finalized = true;
 		throw err;
 	}
 	for (let i = 0; i < b.length; i++) {
@@ -32,15 +32,21 @@ SysvSum.prototype.update = function(b) {
 	return this;
 };
 
-SysvSum.prototype.final = function(encoding) {
-	if (this.dead) {
-		throw new Error('Checksum context in error state');
+SysvSum.prototype.digest = function(encoding) {
+	if (! this.finalized) {
+		this.state = (this.state & 0xffff) + ((this.state | 0) >>> 16);
+		this.state = (this.state & 0xffff) + (this.state >>> 16);
+		this.block = Math.ceil(this.length / 512);
+		this.finalized = true;
 	}
-	this.state = (this.state & 0xffff) + ((this.state & 0xffffffff) >>> 16);
-	this.state = (this.state & 0xffff) + (this.state >>> 16);
-	this.dead = true;
-	this.block = Math.ceil(this.length / 512);
 	return finalize(this.state, 16, encoding);
-}
+};
+
+SysvSum.prototype.final = function(encoding) {
+	if (this.finalized) {
+		throw new Error('Checksum context already finalized');
+	}
+	return this.digest(encoding);
+};
 
 module.exports = SysvSum;
