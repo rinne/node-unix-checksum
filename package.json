@@ -1,6 +1,6 @@
 {
 	"name": "unix-checksum",
-	"version": "4.0.1",
+	"version": "4.0.2",
 	"description": "Implementation of Unix sum, cksum, and crc32 algorithms",
 	"main": "index.js",
 	"scripts": {

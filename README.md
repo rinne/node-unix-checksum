@@ -41,7 +41,7 @@ The following formats are available:
 | base64 | BASE64 string |
 | buffer | raw buffer |
 | integer | integer (only if digest length <= 53 bits) |
-| number | number (0.n for classic checksums, 0..1 for hashes |
+| number | number (lossy for digest lengths > 53 bits) |
 | uuid | version 4 variant 1 or 2 UUID in lower case |
 | UUID | version 4 variant 1 or 2 UUID in upper case |
 | bigint | BigInt presentation of the digest (if supported by runtime) |
@@ -170,7 +170,8 @@ call can be called only once. Calling final() after it or digest() has
 been called already, triggers error.
 
 
-Command line interface is provided only for demonstration purposes.
+Command line interface is provided only for demonstration purposes
+and is not targeted for practical use.
 
 ```
 $ sum GPL-2.0.TXT
@@ -192,6 +193,9 @@ crc32:        1313272993 (4e46f4a1)
 crc32c:       1750386445 (6854c70d)
 ```
 
+See command line program `digest` in package unix-checksum-stream for
+a command line tool that can be used in practical use cases.
+
 
 Disclaimer
 ==========
@@ -203,6 +207,10 @@ intended use for this library is to help backwards compatible
 implementations of some outdated standards, such as RFC 3230.
 Maintaining historical legacy is also among the motivations behind
 making this library public.
+
+However, algorithms provided by crypto module that are proxied through
+this library, are as strong as they are when used directly using the
+crypto module. Choose your algorithm wisely :).
 
 
 Author
