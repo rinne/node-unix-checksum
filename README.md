@@ -31,7 +31,7 @@ compatible with getHashes() interface of the crypto module.
 UnixChecksum.getDigestEncodings()
 ---------------------------------
 
-Returns an array of supported digest encodins.
+Returns an array of supported digest encodings.
 
 The following formats are available:
 
@@ -45,6 +45,10 @@ The following formats are available:
 | uuid | version 4 variant 1 or 2 UUID in lower case |
 | UUID | version 4 variant 1 or 2 UUID in upper case |
 | bigint | BigInt presentation of the digest (if supported by runtime) |
+
+Some encodings can be used only in some hashes. It is e.g. impossible
+to generate a UUID from a digest that is shorter than 128 bits and
+attempting to do so triggers an error.
 
 
 UnixChecksum.hash(algorithm, data, encoding)

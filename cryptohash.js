@@ -108,4 +108,11 @@ CryptoHash.prototype.digest = function(encoding) {
 	/*NOTREACHED*/
 };
 
+CryptoHash.prototype.final = function(encoding) {
+	if (this.finalized) {
+		throw new Error('Checksum context in finalized state');
+	}
+	return this.digest(encoding);
+};
+
 module.exports = CryptoHash;
