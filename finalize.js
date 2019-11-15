@@ -1,14 +1,31 @@
 'use strict';
 
 function finalize(v, bits, encoding) {
+	if (! encoding) {
+		encoding = 'buffer';
+	}
 	if (! (Number.isSafeInteger(bits) && (bits > 0) && (bits <= 48))) {
 		throw new Error('Bad bit length');
 	}
 	if (! (Number.isSafeInteger(v) && (v >= 0) && (v < Math.pow(2, bits)))) {
 		throw new Error('Bad value');
 	}
-	if ((! encoding) || (encoding === 'number') || (encoding === 'integer')) {
+	switch (encoding) {
+	case 'number':
 		return v;
+	case 'integer':
+		if (! Number.isSafeInteger(v)) {
+			throw new Error('Value is not an integer');
+		}
+		return v;
+	case 'bigint':
+		if (! (typeof(BigInt) === 'function')) {
+			throw new Error('BigInt is not supported by this Javascript runtime');
+		}
+		return BigInt(v);
+	case 'uuid':
+	case 'UUID':
+		throw new Error('Digest of 128 bits or more is required for UUID');
 	}
 	var b;
 	switch (Math.ceil(bits / 8)) {

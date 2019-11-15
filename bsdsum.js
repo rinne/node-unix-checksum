@@ -3,12 +3,21 @@
 const bufferify = require('./bufferify.js');
 const finalize = require('./finalize.js');
 
-var BsdSum = function() {
+var BsdSum = function(algorithm) {
+	if (! algorithm) {
+		algorithm = BsdSum.algorithms[0];
+	}
+	if (BsdSum.algorithms.indexOf(algorithm) < 0) {
+		throw new Error('Unsupported algorithm');
+	}
+	this.algorithm = algorithm;
 	this.length = 0;
 	this.block = null;
 	this.state = 0;
 	this.finalized = false;
 };
+
+BsdSum.algorithms = [ 'bsdsum', 'sum-bsd' ];
 
 BsdSum.prototype.update = function(b) {
 	var err;
@@ -43,9 +52,9 @@ BsdSum.prototype.digest = function(encoding) {
 
 BsdSum.prototype.final = function(encoding) {
 	if (this.finalized) {
-		throw new Error('Checksum context already finalized');
+		throw new Error('Checksum context in finalized state');
 	}
 	return this.digest(encoding);
-};
+}
 
 module.exports = BsdSum;

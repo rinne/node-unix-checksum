@@ -11,11 +11,7 @@ const finalize = require('../finalize.js');
 	tv.forEach(function(v) {
 		{
 			let c = uc.bsdSum(v.input);
-			if (typeof(v.bsdsum) === 'number') {
-				assert.equal(v.bsdsum, c, 'bsdSum failure');
-				n++;
-			}
-			[ 'hex', 'base64' ].forEach(function(f) {
+			[ 'number', 'hex', 'base64' ].forEach(function(f) {
 				var s = finalize(c, 16, f);
 				if (typeof(v.bsdsum) === 'number') {
 					assert.equal(finalize(v.bsdsum, 16, f), s, 'bsdSum encoding failure');
@@ -25,11 +21,7 @@ const finalize = require('../finalize.js');
 		}
 		{
 			let c = uc.sysvSum(v.input);
-			if (typeof(v.sysvsum) === 'number') {
-				assert.equal(v.sysvsum, c, 'sysvSum failure');
-				n++;
-			}
-			[ 'hex', 'base64' ].forEach(function(f) {
+			[ 'number', 'hex', 'base64' ].forEach(function(f) {
 				var s = finalize(c, 16, f);
 				if (typeof(v.sysvsum) === 'number') {
 					assert.equal(finalize(v.sysvsum, 16, f), s, 'sysvSum encoding failure');
@@ -39,11 +31,7 @@ const finalize = require('../finalize.js');
 		}
 		{
 			let c = uc.ckSum(v.input);
-			if (typeof(v.cksum) === 'number') {
-				assert.equal(v.cksum, c, 'ckSum failure');
-				n++;
-			}
-			[ 'hex', 'base64' ].forEach(function(f) {
+			[ 'number', 'hex', 'base64' ].forEach(function(f) {
 				var s = finalize(c, 32, f);
 				if (typeof(v.cksum) === 'number') {
 					assert.equal(finalize(v.cksum, 32, f), s, 'ckSum encoding failure');
@@ -53,11 +41,7 @@ const finalize = require('../finalize.js');
 		}
 		{
 			let c = uc.crc32(v.input);
-			if (typeof(v.crc32) === 'number') {
-				assert.equal(v.crc32, c, 'crc32 failure');
-				n++;
-			}
-			[ 'hex', 'base64' ].forEach(function(f) {
+			[ 'number', 'hex', 'base64' ].forEach(function(f) {
 				var s = finalize(c, 32, f);
 				if (typeof(v.crc32) === 'number') {
 					assert.equal(finalize(v.crc32, 32, f), s, 'crc32 encoding failure');
@@ -67,11 +51,7 @@ const finalize = require('../finalize.js');
 		}
 		{
 			let c = uc.crc32c(v.input);
-			if (typeof(v.crc32c) === 'number') {
-				assert.equal(v.crc32c, c, 'crc32c failure');
-				n++;
-			}
-			[ 'hex', 'base64' ].forEach(function(f) {
+			[ 'number', 'hex', 'base64' ].forEach(function(f) {
 				var s = finalize(c, 32, f);
 				if (typeof(v.crc32c) === 'number') {
 					assert.equal(finalize(v.crc32c, 32, f), s, 'crc32c encoding failure');
@@ -96,7 +76,7 @@ const finalize = require('../finalize.js');
 			c5.update(s);
 			i += l;
 		}
-		[ undefined, 'number', 'hex', 'base64' ].forEach(function(f) {
+		[ 'number', 'hex', 'base64' ].forEach(function(f) {
 			if (typeof(v.bsdsum) === 'number') {
 				assert.equal(finalize(v.bsdsum, 16, f), c1.digest(f), 'bsdSum chunked failure');
 				n++;

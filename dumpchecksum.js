@@ -90,7 +90,7 @@ function cs(file) {
 			 if (r.file) {
 				 console.log('file:   ' + r.file);
 			 }
-			 console.log('error:  ' + r.error);
+			 console.log('error:  ' + r.error.toString());
 		 } else {
 			 if (r.file) {
 				 console.log('file:   ' + r.file);

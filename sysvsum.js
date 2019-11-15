@@ -3,12 +3,21 @@
 const bufferify = require('./bufferify.js');
 const finalize = require('./finalize.js');
 
-var SysvSum = function() {
+var SysvSum = function(algorithm) {
+	if (! algorithm) {
+		algorithm = SysvSum.algorithms[0];
+	}
+	if (SysvSum.algorithms.indexOf(algorithm) < 0) {
+		throw new Error('Unsupported algorithm');
+	}
+	this.algorithm = algorithm;
 	this.length = 0;
 	this.block = null;
 	this.state = 0;
 	this.finalized = false;
 };
+
+SysvSum.algorithms = [ 'sysvsum', 'sum-sysv' ];
 
 SysvSum.prototype.update = function(b) {
 	var err;
@@ -44,9 +53,9 @@ SysvSum.prototype.digest = function(encoding) {
 
 SysvSum.prototype.final = function(encoding) {
 	if (this.finalized) {
-		throw new Error('Checksum context already finalized');
+		throw new Error('Checksum context in finalized state');
 	}
 	return this.digest(encoding);
-};
+}
 
 module.exports = SysvSum;

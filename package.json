@@ -1,6 +1,6 @@
 {
 	"name": "unix-checksum",
-	"version": "3.0.0",
+	"version": "4.0.0",
 	"description": "Implementation of Unix sum, cksum, and crc32 algorithms",
 	"main": "index.js",
 	"scripts": {
@@ -22,7 +22,18 @@
 		"crc32",
 		"crc32c",
 		"unix",
-		"legacy"
+		"legacy",
+		"UUID",
+		"hash",
+		"MAC",
+		"MD5",
+		"SHA",
+		"SHA-1",
+		"sha1",
+		"SHA-256",
+		"sha256",
+		"SHA-512",
+		"sha512"
 	],
 	"author": {
 		"name": "Timo J. Rinne",

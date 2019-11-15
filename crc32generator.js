@@ -63,7 +63,7 @@ CRC32gen.prototype.digest = function(encoding) {
 
 CRC32gen.prototype.final = function(encoding) {
 	if (this.finalized) {
-		throw new Error('Checksum context already finalized');
+		throw new Error('Checksum context in finalized state');
 	}
 	return this.digest(encoding);
 };

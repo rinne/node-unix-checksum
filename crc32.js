@@ -2,11 +2,20 @@
 
 const CRC32Generator = require('./crc32generator.js');
 
-var CRC32 = function() {
+var CRC32 = function(algorithm) {
+	if (! algorithm) {
+		algorithm = CRC32.algorithms[0];
+	}
+	if (CRC32.algorithms.indexOf(algorithm) < 0) {
+		throw new Error('Unsupported algorithm');
+	}
+	this.algorithm = algorithm;
 	this.finalized = false;
 	this.length = 0;
 	this.crc = new CRC32Generator(-306674912);
 }
+
+CRC32.algorithms = [ 'crc32' ];
 
 CRC32.prototype.update = function(b) {
 	if (this.finalized) {
@@ -29,7 +38,7 @@ CRC32.prototype.digest = function(encoding) {
 
 CRC32.prototype.final = function(encoding) {
 	if (this.finalized) {
-		throw new Error('Checksum context already finalized');
+		throw new Error('Checksum context in finalized state');
 	}
 	return this.digest(encoding);
 }

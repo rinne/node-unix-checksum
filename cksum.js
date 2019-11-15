@@ -26,12 +26,21 @@ function ckSumInit() {
 	ckSumTbl = c;
 }
 
-var CkSum = function() {
+var CkSum = function(algorithm) {
+	if (! algorithm) {
+		algorithm = CkSum.algorithms[0];
+	}
+	if (CkSum.algorithms.indexOf(algorithm) < 0) {
+		throw new Error('Unsupported algorithm');
+	}
 	ckSumInit();
+	this.algorithm = algorithm;
 	this.length = 0;
 	this.state = 0;
 	this.finalized = false;
 };
+
+CkSum.algorithms = [ 'cksum' ];
 
 CkSum.prototype.update = function(b) {
 	var err;
@@ -71,9 +80,9 @@ CkSum.prototype.digest = function(encoding) {
 
 CkSum.prototype.final = function(encoding) {
 	if (this.finalized) {
-		throw new Error('Checksum context already finalized');
+		throw new Error('Checksum context in finalized state');
 	}
 	return this.digest(encoding);
-};
+}
 
 module.exports = CkSum;
