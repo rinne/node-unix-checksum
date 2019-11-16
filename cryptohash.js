@@ -11,6 +11,7 @@ var CryptoHash = function(algorithm) {
 		throw new Error('Unsupported algorithm');
 	}
 	this.algorithm = algorithm;
+	this.defaultEncoding = 'hex';
 	this.length = 0;
 	this.result = null;
 	this.state = 0;
@@ -109,6 +110,8 @@ CryptoHash.prototype.digest = function(encoding) {
 				 r.slice(20, 32));
 			return r;
 		}
+	case 'default':
+		return this.result.toString(this.defaultEncoding);
 	default:
 		return this.result.toString(encoding);
 	};

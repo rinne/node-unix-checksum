@@ -11,6 +11,7 @@ var BsdSum = function(algorithm) {
 		throw new Error('Unsupported algorithm');
 	}
 	this.algorithm = algorithm;
+	this.defaultEncoding = 'number';
 	this.length = 0;
 	this.block = null;
 	this.state = 0;
@@ -46,6 +47,9 @@ BsdSum.prototype.digest = function(encoding) {
 		this.block = Math.ceil(this.length / 1024);
 		this.finalized = true;
 		Object.freeze(this);
+	}
+	if (encoding === 'default') {
+		encoding = this.defaultEncoding;
 	}
 	return finalize(this.state, 16, encoding);
 };

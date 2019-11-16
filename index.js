@@ -44,6 +44,7 @@ function hash(a, d, e) {
 
 function getDigestEncodings() {
 	var r = [
+		'default',
 		'hex',
 		'HEX',
 		'base64',

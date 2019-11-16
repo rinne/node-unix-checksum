@@ -24,6 +24,7 @@ function crcInit(poly) {
 var CRC32gen = function(poly) {
 	this.poly = poly | 0;
 	this.crcTbl = crcInit(this.poly);
+	this.defaultEncoding = 'hex';
 	this.length = 0;
 	this.state = 0;
 	this.finalized = false;
@@ -57,6 +58,9 @@ CRC32gen.prototype.digest = function(encoding) {
 		if (this.state < 0) {
 			this.state += 4294967296;
 		}
+	}
+	if (encoding === 'default') {
+		encoding = this.defaultEncoding;
 	}
 	return finalize(this.state, 32, encoding);
 };

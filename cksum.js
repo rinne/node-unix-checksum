@@ -35,6 +35,7 @@ var CkSum = function(algorithm) {
 	}
 	ckSumInit();
 	this.algorithm = algorithm;
+	this.defaultEncoding = 'number';
 	this.length = 0;
 	this.state = 0;
 	this.finalized = false;
@@ -74,6 +75,9 @@ CkSum.prototype.digest = function(encoding) {
 			this.state += 4294967296;
 		}
 		this.finalized = true;
+	}
+	if (encoding === 'default') {
+		encoding = this.defaultEncoding;
 	}
 	return finalize(this.state, 32, encoding);
 };

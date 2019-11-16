@@ -11,6 +11,7 @@ var SysvSum = function(algorithm) {
 		throw new Error('Unsupported algorithm');
 	}
 	this.algorithm = algorithm;
+	this.defaultEncoding = 'number';
 	this.length = 0;
 	this.block = null;
 	this.state = 0;
@@ -47,6 +48,9 @@ SysvSum.prototype.digest = function(encoding) {
 		this.state = (this.state & 0xffff) + (this.state >>> 16);
 		this.block = Math.ceil(this.length / 512);
 		this.finalized = true;
+	}
+	if (encoding === 'default') {
+		encoding = this.defaultEncoding;
 	}
 	return finalize(this.state, 16, encoding);
 };

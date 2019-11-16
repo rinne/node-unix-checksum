@@ -37,7 +37,9 @@ The following formats are available:
 
 | name | format |
 | -- | -- |
+| default | Algorithm specific default encoding (usually hex or number) |
 | hex | hexadecimal string |
+| HEX | upper case hexadecimal string |
 | base64 | BASE64 string |
 | buffer | raw buffer |
 | integer | integer (only if digest length <= 53 bits) |
@@ -45,7 +47,8 @@ The following formats are available:
 | uuid | version 4 variant 1 or 2 UUID in lower case |
 | UUID | version 4 variant 1 or 2 UUID in upper case |
 | bigint | BigInt presentation of the digest (if supported by runtime) |
-
+| bubblebabble | Easily pronouncable encoding |
+| BUBBLEBABBLE | Easily pronouncable encoding in upper case |
 Some encodings can be used only in some hashes. It is e.g. impossible
 to generate a UUID from a digest that is shorter than 128 bits and
 attempting to do so triggers an error.

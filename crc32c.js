@@ -10,6 +10,7 @@ var CRC32C = function(algorithm) {
 		throw new Error('Unsupported algorithm');
 	}
 	this.algorithm = algorithm;
+	this.defaultEncoding = 'hex';
 	this.finalized = false;
 	this.length = 0;
 	this.crc = new CRC32Generator(-2097792136);
@@ -32,6 +33,9 @@ CRC32C.prototype.digest = function(encoding) {
 	if (! this.finalized) {
 		this.state = this.crc.state;
 		this.finalized = true;
+	}
+	if (encoding === 'default') {
+		encoding = this.defaultEncoding;
 	}
 	return r;
 };
