@@ -24,7 +24,7 @@ function crcInit(poly) {
 var CRC32gen = function(poly) {
 	this.poly = poly | 0;
 	this.crcTbl = crcInit(this.poly);
-	this.defaultEncoding = 'hex';
+	this.defaultEncoding = 'hex-with-prefix';
 	this.length = 0;
 	this.state = 0;
 	this.finalized = false;

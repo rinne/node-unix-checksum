@@ -1,6 +1,7 @@
 'use strict';
 
 const bubblebabbler = require('bubblebabbler');
+const buf2bin = require('./buf2bin.js');
 
 function finalize(v, bits, encoding) {
 	if (! encoding) {
@@ -79,6 +80,16 @@ function finalize(v, bits, encoding) {
 		return bubblebabbler(b);
 	case 'BUBBLEBABBLE':
 		return bubblebabbler(b).toUpperCase();
+	case 'hex-with-prefix':
+		return '0x' + b.toString('hex');
+	case 'HEX-WITH-PREFIX':
+		return ('0x' + b.toString('hex')).toUpperCase();
+	case 'binary':
+		return buf2bin(b);
+	case 'binary-with-prefix':
+		return '0b' + buf2bin(b);
+	case 'BINARY-WITH-PREFIX':
+		return ('0b' + buf2bin(b)).toUpperCase();
 	}
 	return b.toString(encoding);
 }

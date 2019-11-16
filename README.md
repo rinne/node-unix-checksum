@@ -40,6 +40,11 @@ The following formats are available:
 | default | Algorithm specific default encoding (usually hex or number) |
 | hex | hexadecimal string |
 | HEX | upper case hexadecimal string |
+| hex-with-prefix | hexadecimal string with 0x prefix |
+| HEX-WITH-PREFIX | upper case hexadecimal string with 0X prefix |
+| binary | binary string |
+| binary-with-prefix | binary string with 0b prefix |
+| BINARY-WITH-PREFIX | binary string with 0B prefix |
 | base64 | BASE64 string |
 | buffer | raw buffer |
 | integer | integer (only if digest length <= 53 bits) |

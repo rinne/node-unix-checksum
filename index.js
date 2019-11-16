@@ -54,7 +54,12 @@ function getDigestEncodings() {
 		'uuid',
 		'UUID',
 		'bubblebabble',
-		'BUBBLEBABBLE'
+		'BUBBLEBABBLE',
+		'hex-with-prefix',
+		'HEX-WITH-PREFIX',
+		'binary',
+		'binary-with-prefix',
+		'BINARY-WITH-PREFIX'
 	];
 	if (typeof(BigInt) === 'function') {
 		r.push('bigint');

@@ -2,6 +2,7 @@
 
 const crypto = require('crypto');
 const bubblebabbler = require('bubblebabbler');
+const buf2bin = require('./buf2bin.js');
 
 var CryptoHash = function(algorithm) {
 	if (! algorithm) {
@@ -34,6 +35,9 @@ CryptoHash.prototype.digest = function(encoding) {
 	if (! this.finalized) {
 		this.finalized = true;
 		this.result = this.hash.digest();
+	}
+	if (encoding === 'default') {
+		encoding = this.defaultEncoding;
 	}
 	this.state = 0;
 	for (let i = 0; i < this.result.length; i++) {
@@ -110,8 +114,16 @@ CryptoHash.prototype.digest = function(encoding) {
 				 r.slice(20, 32));
 			return r;
 		}
-	case 'default':
-		return this.result.toString(this.defaultEncoding);
+	case 'hex-with-prefix':
+		return '0x' + this.result.toString('hex');
+	case 'HEX-WITH-PREFIX':
+		return ('0x' + this.result.toString('hex')).toUpperCase();
+	case 'binary':
+		return buf2bin(this.result);
+	case 'binary-with-prefix':
+		return '0b' + buf2bin(this.result);
+	case 'BINARY-WITH-PREFIX':
+		return ('0b' + buf2bin(this.result)).toUpperCase();
 	default:
 		return this.result.toString(encoding);
 	};

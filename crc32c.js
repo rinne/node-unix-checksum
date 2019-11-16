@@ -10,7 +10,7 @@ var CRC32C = function(algorithm) {
 		throw new Error('Unsupported algorithm');
 	}
 	this.algorithm = algorithm;
-	this.defaultEncoding = 'hex';
+	this.defaultEncoding = 'hex-with-prefix';
 	this.finalized = false;
 	this.length = 0;
 	this.crc = new CRC32Generator(-2097792136);
