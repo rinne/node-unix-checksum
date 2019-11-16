@@ -1,5 +1,7 @@
 'use strict';
 
+const bubblebabbler = require('bubblebabbler');
+
 function finalize(v, bits, encoding) {
 	if (! encoding) {
 		encoding = 'buffer';
@@ -69,6 +71,14 @@ function finalize(v, bits, encoding) {
 	}
 	if (encoding === 'buffer') {
 		return b;
+	}
+	switch (encoding) {
+	case 'HEX':
+		return b.toString('hex').toUpperCase();
+	case 'bubblebabble':
+		return bubblebabbler(b);
+	case 'BUBBLEBABBLE':
+		return bubblebabbler(b).toUpperCase();
 	}
 	return b.toString(encoding);
 }

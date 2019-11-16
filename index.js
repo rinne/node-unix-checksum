@@ -45,12 +45,15 @@ function hash(a, d, e) {
 function getDigestEncodings() {
 	var r = [
 		'hex',
+		'HEX',
 		'base64',
 		'buffer',
 		'integer',
 		'number',
 		'uuid',
-		'UUID'
+		'UUID',
+		'bubblebabble',
+		'BUBBLEBABBLE'
 	];
 	if (typeof(BigInt) === 'function') {
 		r.push('bigint');

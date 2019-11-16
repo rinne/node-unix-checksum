@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
+const bubblebabbler = require('bubblebabbler');
 
 var CryptoHash = function(algorithm) {
 	if (! algorithm) {
@@ -65,6 +66,12 @@ CryptoHash.prototype.digest = function(encoding) {
 			return r;
 		}
 		throw new Error('BigInt is not supported by this Javascript runtime');
+	case 'HEX':
+		return this.result.toString('hex').toUpperCase();
+	case 'bubblebabble':
+		return bubblebabbler(this.result);
+	case 'BUBBLEBABBLE':
+		return bubblebabbler(this.result).toUpperCase();
 	case 'uuid':
 	case 'UUID':
 		if (this.result.length < 16) {
