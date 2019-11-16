@@ -8,6 +8,17 @@ const finalize = require('../finalize.js');
 
 (function() {
 	var n = 0;
+
+	uc.getHashes().forEach(function(a) {
+		var l = uc.hash(a, '', 'buffer').length * 8;
+		uc.getDigestEncodings().forEach(function(e) {
+			if ((l >= 128) || (! e.match(/uuid/i))) {
+				uc.hash(a, 'quick brown fox jumps over the lazy dog', e);
+				n++;
+			}
+		});
+	});
+											
 	tv.forEach(function(v) {
 		{
 			let c = uc.bsdSum(v.input);
