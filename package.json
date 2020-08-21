@@ -1,13 +1,13 @@
 {
 	"name": "unix-checksum",
-	"version": "4.3.0",
+	"version": "4.4.0",
 	"description": "Implementation of Unix sum, cksum, and crc32 algorithms",
 	"main": "index.js",
 	"scripts": {
 		"test": "node ./test/test.js"
 	},
 	"engines": {
-		"node": ">=8.00.0"
+		"node": ">=8.0.0"
 	},
 	"dependencies": {
 		"bubblebabbler": "^1.0.0"
